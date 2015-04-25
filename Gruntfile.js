@@ -26,10 +26,10 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      build: {
-        src: "public/client/clientConcat.js",
-        dest: "public/client/clientConcat.min.js"
-      }
+      // build: {
+      //   src: "public/client/clientConcat.js",
+      //   dest: "public/client/clientConcat.min.js"
+      // }
     },
 
     jshint: {
@@ -68,6 +68,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'git push azure master'
       }
     },
   });
@@ -107,17 +108,18 @@ module.exports = function(grunt) {
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
+
       // add your production server task here
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
 
-  grunt.registerTask('deploy', [
+  grunt.registerTask('deploy', ['shell'
     // add your deploy tasks here
   ]);
 
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('default', ['concat']);
 
 
 };

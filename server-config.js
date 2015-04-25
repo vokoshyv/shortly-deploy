@@ -4,17 +4,20 @@ var util = require('./lib/utility');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
 
 var handler = require('./lib/request-handler');
 
 var app = express();
 
-// MONGOOSE SWITCHOVER
+// MONGOOSE
+// require('./lib/request-handler.js')(app, express);
+
 mongoose.connect('mongodb://localhost/shortlyDeploy');
 // MONGOOSE SWITCHOVER
 
 
-app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(morgan('dev'));
@@ -25,9 +28,9 @@ app.configure(function() {
   app.use(bodyParser.json());
   // MONGOOSE SWITCHOVER
   app.use(express.static(__dirname + '/public'));
-  app.use(express.cookieParser('shhhh, very secret'));
-  app.use(express.session());
-});
+  app.use(cookieParser('shhhh, very secret'));
+  app.use(session());
+
 
 app.get('/', util.checkUser, handler.renderIndex);
 app.get('/create', util.checkUser, handler.renderIndex);
